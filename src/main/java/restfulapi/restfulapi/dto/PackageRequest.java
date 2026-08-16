@@ -14,14 +14,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PackageRequest {
 
-    @NotBlank(message = "Nama paket tidak boleh kosong")
+    @NotBlank(message = "Package Name Cannot Be Empty!")
     private String name;
 
-    @NotNull(message = "Harga wajib diisi")
-    @Min(value = 1, message = "Harga tidak boleh negatif/nol")
+    @NotNull(message = "Please fill the price!")
+    @Min(value = 1, message = "The Price Cannot be Zero or Minus")
     private Long price;
 
-    @NotNull(message = "Kuota wajib diisi")
-    @Min(value = 100, message = "Kuota minimal 100 MB")
+    @NotNull(message = "Please fill the quota!")
+    @Min(value = 100, message = "Minimum Quota is 100 MB")
     private Integer quota;
 }
