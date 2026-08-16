@@ -1,5 +1,9 @@
 package restfulapi.restfulapi.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import restfulapi.restfulapi.dto.PackageRequest;
 import restfulapi.restfulapi.dto.PackageResponse;
 import restfulapi.restfulapi.entity.PackageData;
@@ -26,11 +30,23 @@ public class PackageService {
         return mapToResponse(saved);
     }
 
-    public List<PackageResponse> getAllPackages() {
-        return packageRepository.findAll()
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+//    public List<PackageResponse> getAllPackages() {
+//        return packageRepository.findAll()
+//                .stream()
+//                .map(this::mapToResponse)
+//                .collect(Collectors.toList());
+//    }
+
+//  Test using pagination
+    public Page<PackageResponse> getAllPackages(int page, int size, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return packageRepository.findAll(pageable)
+                .map(this::mapToResponse);
     }
 
     public PackageResponse getPackageById(Long id) {

@@ -1,6 +1,7 @@
 package restfulapi.restfulapi.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import restfulapi.restfulapi.dto.ApiResponse;
 import restfulapi.restfulapi.dto.PackageRequest;
 import restfulapi.restfulapi.dto.PackageResponse;
@@ -27,10 +28,27 @@ public class PackageController {
                 .build();
     }
 
+//    @GetMapping
+//    public ApiResponse<List<PackageResponse>> getAll() {
+//        List<PackageResponse> responses = packageService.getAllPackages();
+//        return ApiResponse.<List<PackageResponse>>builder()
+//                .code(200)
+//                .status("OK")
+//                .data(responses)
+//                .build();
+//    }
+
+//  Test using pagination
     @GetMapping
-    public ApiResponse<List<PackageResponse>> getAll() {
-        List<PackageResponse> responses = packageService.getAllPackages();
-        return ApiResponse.<List<PackageResponse>>builder()
+    public ApiResponse<Page<PackageResponse>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
+        Page<PackageResponse> responses = packageService.getAllPackages(page, size, sortBy, sortDir);
+
+        return ApiResponse.<Page<PackageResponse>>builder()
                 .code(200)
                 .status("OK")
                 .data(responses)
